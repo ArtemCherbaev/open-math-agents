@@ -1,6 +1,8 @@
 import FormalConjectures.OEIS.«67599»
 import Mathlib.Data.Nat.Digits.Lemmas
 
+/-! # Fixed points from a prime in a decimal progression -/
+
 -- Credit: @ArtemCherbaev
 namespace OMA.R_OeisA67599_conjecture_R1
 
@@ -20,9 +22,9 @@ theorem main : H1 → H2 → type_of% @OeisA67599.conjecture := by
   let q := (7400 * b + 1) / 2391
   have hperiod : (10 : ℕ) ^ 199 ≡ 1 [MOD 2391] := by decide
   have hbmod : b ≡ 10 ^ 135 [MOD 2391] := by
-    dsimp [b, k]
+    change (10 : ℕ) ^ (135 + 199 * t) ≡ 10 ^ 135 [MOD 2391]
     rw [pow_add, pow_mul]
-    simpa using (Nat.ModEq.refl ((10 : ℕ) ^ 135)).mul (hperiod.pow t)
+    simpa only [one_pow, mul_one] using (hperiod.pow t).mul_left ((10 : ℕ) ^ 135)
   have hbase : 7400 * (10 : ℕ) ^ 135 + 1 ≡ 0 [MOD 2391] := by decide
   have hdiv : 2391 ∣ 7400 * b + 1 := Nat.modEq_zero_iff_dvd.mp
     ((((Nat.ModEq.refl 7400).mul hbmod).add (Nat.ModEq.refl 1)).trans hbase)
